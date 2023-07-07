@@ -2,17 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.example</groupId>
+        <groupId>com.github.chalmery</groupId>
         <artifactId>rule</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>top.yangcc</groupId>
     <artifactId>client</artifactId>
     <packaging>jar</packaging>
 
     <name>client</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/chalmery/rule</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,10 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

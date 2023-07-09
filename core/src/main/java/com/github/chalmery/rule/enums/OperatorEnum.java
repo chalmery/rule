@@ -13,9 +13,9 @@ public enum OperatorEnum {
     MINUS('-', 1),
     MULTIPLY('*', 2),
     DIVIDE('/', 2),
-    POWER('^', 3),
-    LOGICAL_OR('|', 4),
-    LOGICAL_AND('&', 5),
+    OR('|', 3),
+    AND('&', 3),
+    NOT('!', 3),
     LEFT_PAREN('(', 0),
     RIGHT_PAREN(')', 0);
 
@@ -37,5 +37,18 @@ public enum OperatorEnum {
             }
         }
         return null;
+    }
+
+    public static boolean isLogicalOperator(char operator) {
+        if (operator == OperatorEnum.AND.getOperator()){
+            return true;
+        }
+        if (operator == OperatorEnum.OR.getOperator()){
+            return true;
+        }
+        if (operator == OperatorEnum.NOT.getOperator()){
+            return true;
+        }
+        return false;
     }
 }

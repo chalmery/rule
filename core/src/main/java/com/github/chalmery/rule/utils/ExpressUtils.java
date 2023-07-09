@@ -21,35 +21,64 @@ public class ExpressUtils {
         if (StringUtils.isBlank(inExpress)) {
             return null;
         }
-        for (char operator : inExpress.toCharArray()) {
+        char[] charArray = inExpress.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            char operator = charArray[i];
             //左括弧入栈
             if (operator == OperatorEnum.LEFT_PAREN.getOperator()) {
                 operatorStack.push(operator);
             }
             //右括弧出栈直到遇到(
             else if (operator == OperatorEnum.RIGHT_PAREN.getOperator()) {
-                Character stackPop = operatorStack.pop();
-                if (Objects.isNull(stackPop) || stackPop.equals(OperatorEnum.LEFT_PAREN.getOperator())) {
+                if (operatorStack.empty()){
                     throw new RuntimeException("表达式有误");
                 }
-                express.append(stackPop);
+                boolean flag = false;
                 while (!operatorStack.empty()) {
                     Character character = operatorStack.pop();
                     if (character.equals(OperatorEnum.LEFT_PAREN.getOperator())){
+                        flag = true;
                         break;
                     }
-                    express.append(stackPop);
+                    express.append(character);
+                }
+                //一直没有遇到左括弧呢
+                if (!flag){
+                    throw new RuntimeException("表达式有误");
                 }
             }
             //字母或者数字
             else if(Character.isLetterOrDigit(operator)){
                 express.append(operator);
             }
-            //符号 优先级大于等于当前的符号出栈
+            // 逻辑运算符
+            else if (OperatorEnum.isLogicalOperator(operator)) {
+                OperatorEnum thisOperator = OperatorEnum.parse(operator);
+                if (Objects.isNull(thisOperator)) {
+                    throw new RuntimeException("操作符不支持");
+                }
+                while (!operatorStack.empty()) {
+                    Character topOperator = operatorStack.peek();
+                    if (topOperator == OperatorEnum.LEFT_PAREN.getOperator()) {
+                        break;
+                    }
+                    if (topOperator == operator){
+                        break;
+                    }
+                    express.append(operatorStack.pop());
+                }
+                operatorStack.push(operator);
+            }
+
+            //算术运算符 优先级大于等于当前的符号出栈
             else {
                 OperatorEnum thisOperator = OperatorEnum.parse(operator);
                 if (Objects.isNull(thisOperator)){
                     throw new RuntimeException("操作符不支持");
+                }
+                //算术运算符的左右必须为数字或者括号，并且表达式不能为最后一个
+                if (i==charArray.length-1){
+                    throw new RuntimeException("表达式有误");
                 }
                 while (!operatorStack.empty()){
                     Character pop = operatorStack.pop();
@@ -75,6 +104,8 @@ public class ExpressUtils {
             }
             express.append(pop);
         }
+
+        operatorStack.clear();
         return express.toString();
     }
 

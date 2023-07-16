@@ -13,14 +13,15 @@ import java.util.Stack;
  */
 public class ExpressUtils {
 
-    private Stack<Character> operatorStack = new Stack<>();
 
-    private StringBuilder express = new StringBuilder();
-
-    public String inExpToPostExp(String inExpress) {
+    public static String inExpToPostExp(String inExpress) {
         if (StringUtils.isBlank(inExpress)) {
             return null;
         }
+       Stack<Character> operatorStack = new Stack<>();
+
+       StringBuilder express = new StringBuilder();
+
         char[] charArray = inExpress.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             char operator = charArray[i];
@@ -49,7 +50,18 @@ public class ExpressUtils {
             }
             //字母或者数字
             else if(Character.isLetterOrDigit(operator)){
-                express.append(operator);
+                StringBuilder operand = new StringBuilder();
+                operand.append(operator);
+                // 检查下一个字符，如果是字母或数字，继续连接
+                while (i + 1 < charArray.length && (Character.isLetterOrDigit(charArray[i + 1]))) {
+                    operand.append(charArray[i + 1]);
+                    i++;
+                }
+                if (express.toString().endsWith(" ") || express.toString().isBlank()){
+                    express.append(operand).append(" ");
+                }else {
+                    express.append(" ").append(operand).append(" ");
+                }
             }
             // 逻辑运算符
             else if (OperatorEnum.isLogicalOperator(operator)) {
@@ -90,11 +102,14 @@ public class ExpressUtils {
                         operatorStack.push(pop);
                         break;
                     }else {
-                        express.append(pop);
+                        express.append(pop).append(" ");
                     }
                 }
                 operatorStack.push(operator);
             }
+        }
+        if (!operatorStack.empty() && !express.toString().endsWith(" ")){
+            express.append(" ");
         }
         //看栈内有没有数据
         while (!operatorStack.empty()){
@@ -102,10 +117,11 @@ public class ExpressUtils {
             if (pop.equals(OperatorEnum.RIGHT_PAREN.getOperator()) || pop.equals(OperatorEnum.LEFT_PAREN.getOperator())) {
                 throw new RuntimeException("表达式有误");
             }
+            if (!operatorStack.empty() && OperatorEnum.isLogicalOperator(pop) && !operatorStack.peek().equals(pop)){
+                express.append(" ");
+            }
             express.append(pop);
         }
-
-        operatorStack.clear();
         return express.toString();
     }
 

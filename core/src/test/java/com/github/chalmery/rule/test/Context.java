@@ -1,4 +1,4 @@
-package com.github.chalmery.rule.express;
+package com.github.chalmery.rule.test;
 
 import java.util.HashMap;
 import java.util.Map;

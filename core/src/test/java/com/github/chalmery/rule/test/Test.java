@@ -1,4 +1,4 @@
-package com.github.chalmery.rule.express;
+package com.github.chalmery.rule.test;
 
 public class Test {
 

@@ -1,8 +1,6 @@
 package com.github.chalmery.rule.express;
 
 import com.github.chalmery.rule.api.Express;
-import com.github.chalmery.rule.entity.Context;
-import com.github.chalmery.rule.value.BooleanValue;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -21,9 +19,9 @@ public class AndExpress extends AbstractExpress{
 
 
     @Override
-    public BooleanValue interpret(Context context) {
-        BooleanValue leftValue = (BooleanValue) left.interpret(context);
-        BooleanValue rightValue = (BooleanValue) right.interpret(context);
-        return new BooleanValue(leftValue.getValue() && rightValue.getValue());
+    public Boolean interpret() {
+        Boolean leftV = (Boolean) left.interpret();
+        Boolean rightV = (Boolean)right.interpret();
+        return leftV&& rightV;
     }
 }

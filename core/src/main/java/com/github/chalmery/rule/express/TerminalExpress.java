@@ -6,16 +6,17 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author: ycc
- * @date: 2023/7/11 下午11:18
+ * @date: 2023/7/16 下午7:43
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotExpress extends AbstractExpress{
+public class TerminalExpress implements Express {
 
-    private Express express;
+
+    private Object value;
 
     @Override
-    public Boolean interpret() {
-        return !(Boolean)express.interpret();
+    public Object interpret() {
+        return value;
     }
 }
